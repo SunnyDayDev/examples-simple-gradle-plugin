@@ -1,7 +1,17 @@
 apply plugin: 'java-library'
 
 dependencies {
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    implementation gradleApi()
+
+    implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+
+}
+
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
 }
 
 sourceCompatibility = "1.7"
