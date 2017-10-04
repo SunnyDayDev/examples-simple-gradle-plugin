@@ -8,3 +8,5 @@ gradlew.bat
 /build
 /captures
 .externalNativeBuild
+
+app/repo/

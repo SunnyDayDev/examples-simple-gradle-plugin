@@ -4,22 +4,99 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-android-extensions'
 
+apply plugin: "autoIncrementor"
+
+buildscript {
+
+    repositories {
+        maven { url("repo") }
+        jcenter()
+    }
+
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "me.sunnydaydev:autoIncrementor:0.0.1"
+    }
+
+}
+
+autoIncrementor {
+
+    enabled true
+
+    increments {
+
+        main {
+
+            onFlavors "allIncremented"
+            onBuildTypes "releaseProduct"
+            onVariants "concreteIncrementedRelease", "concreteIncrementedReleaseProduct"
+
+            buildIncrement 5
+
+        }
+
+    }
+
+}
+
 android {
+
     compileSdkVersion 26
-    buildToolsVersion "26.0.1"
+    buildToolsVersion '26.0.2'
+
     defaultConfig {
+
         applicationId "me.sunnydaydev.simplegradleplugin"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
+
     buildTypes {
+
+        debug {
+
+            //autoincrement 2
+
+        }
+
         release {
+
+            //autoincrement 3
+
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        releaseProduct {
+
+            //autoincrement 3
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    flavorDimensions "increment"
+
+    productFlavors {
+
+        allIncremented {
+            dimension "increment"
+        }
+
+        concreteIncremented {
+            dimension "increment"
+        }
+
+        notIncremented {
+            dimension "increment"
+        }
+
     }
 }
 
