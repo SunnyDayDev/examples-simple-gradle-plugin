@@ -27,6 +27,18 @@ autoIncrementor {
     increments {
 
         main {
+            onVariants "release"
+            buildIncrement 1000
+        }
+
+        other {
+            onVariants "debug", "nonExists"
+            buildIncrement 1
+
+        }
+
+        /*
+        main {
 
             onFlavors "allIncremented"
             onBuildTypes "releaseProduct"
@@ -35,8 +47,7 @@ autoIncrementor {
             buildIncrement 5
 
         }
-
-        other { }
+        */
 
     }
 
@@ -83,6 +94,7 @@ android {
         }
     }
 
+    /*
     flavorDimensions "increment"
 
     productFlavors {
@@ -100,6 +112,7 @@ android {
         }
 
     }
+    */
 }
 
 dependencies {

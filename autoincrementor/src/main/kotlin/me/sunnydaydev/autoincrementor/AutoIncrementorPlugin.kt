@@ -18,8 +18,19 @@ class AutoIncrementorPlugin : Plugin<Project> {
         project.afterEvaluate {
 
             println("AutoIncrement ${ if (extension.enabled) { "enabled" } else { "disabled" } }.")
-            if (extension.enabled) {
-                println("Increments: ${ extension.increments.map { it.name } }")
+
+            if (extension.enabled && extension.increments.isNotEmpty()) {
+
+                println("Increments:")
+
+                extension.increments.forEach {
+                    println("""
+                        - ${it.name}:
+                            Variants: ${it.onVariants.joinToString()}
+                            Build increment: ${it.buildIncrement}
+                    """.trimIndent())
+                }
+
             }
 
         }
