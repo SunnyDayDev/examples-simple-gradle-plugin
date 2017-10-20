@@ -21,7 +21,6 @@ sourceSets {
 }
 
 compileKotlin {
-    //dependsOn tasks.getByPath('compileGroovy')
     classpath += files(compileGroovy.destinationDir)
 }
 
@@ -35,7 +34,7 @@ dependencies {
 
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
-    compileOnly "com.android.tools.build:gradle:3.0.0-beta7"
+    compileOnly "com.android.tools.build:gradle:3.0.0-rc1"
 
 }
 

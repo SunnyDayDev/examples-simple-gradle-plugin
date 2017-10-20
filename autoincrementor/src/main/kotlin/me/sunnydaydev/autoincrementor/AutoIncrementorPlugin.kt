@@ -2,7 +2,6 @@ package me.sunnydaydev.autoincrementor
 
 import com.android.build.gradle.*
 import com.android.build.gradle.api.ApplicationVariant
-import com.android.build.gradle.internal.api.ApplicationVariantImpl
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -16,6 +15,15 @@ class AutoIncrementorPlugin : Plugin<Project> {
                 project.container(Increment::class.java)
         )
 
+        project.afterEvaluate {
+
+            println("AutoIncrement ${ if (extension.enabled) { "enabled" } else { "disabled" } }.")
+            if (extension.enabled) {
+                println("Increments: ${ extension.increments.map { it.name } }")
+            }
+
+        }
+
         if (project.plugins.hasPlugin(AppPlugin::class.java)) {
 
             val app = project.extensions.getByType(AppExtension::class.java)
@@ -27,7 +35,7 @@ class AutoIncrementorPlugin : Plugin<Project> {
                         ?: return@all
 
                 val task = project.tasks.create(
-                        "incrementVersion${variant.name.capitalize()}",
+                        "increment${increment.name.capitalize()}On${variant.name.capitalize()}",
                         VariantIncrementTask::class.java
                 ) {
 
