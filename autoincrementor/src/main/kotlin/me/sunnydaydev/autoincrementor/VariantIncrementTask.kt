@@ -3,6 +3,7 @@ package me.sunnydaydev.autoincrementor
 import com.android.build.gradle.api.ApplicationVariant
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.TaskAction
+import kotlin.reflect.full.declaredMemberFunctions
 
 /**
  * Created by sunny on 04.10.2017.
@@ -13,20 +14,23 @@ open class VariantIncrementTask: DefaultTask() {
 
     lateinit var variant: ApplicationVariant
     lateinit var increment: Increment
+    lateinit var store: AutoIncrementStore
 
     @TaskAction
     fun increment() {
 
-        println("Start $name")
+        //Increment only if assemble
+        if (isAssemble()) {
+            store.versionCode += increment.buildIncrement
+            variant.setVersionCode(store.versionCode)
+        }
 
-        project.gradle.taskGraph.allTasks
-                .find { it.name == "assemble${variant.name.capitalize()}" }
-                ?: return
+    }
 
-        println("Variant class: ${variant::class.java.name}")
-
-        println("Variant: ${variant.name}")
-
+    private fun isAssemble(): Boolean {
+        return project.gradle.taskGraph.allTasks
+                .map { it.name.split(":").last() }
+                .contains("assemble${variant.name.capitalize()}")
     }
 
 }

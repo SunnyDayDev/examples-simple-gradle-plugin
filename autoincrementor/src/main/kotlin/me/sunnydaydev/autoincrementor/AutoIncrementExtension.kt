@@ -8,7 +8,10 @@ import org.gradle.api.NamedDomainObjectContainer
  * mail: mail@sunnydaydev.me
  */
 
-open class AutoIncrementExtension(val increments: NamedDomainObjectContainer<Increment>) {
+open class AutoIncrementExtension(val increments: NamedDomainObjectContainer<Increment>,
+                                  private val store: AutoIncrementStore) {
+
+    val versionCode: Int get() = store.versionCode
 
     var enabled = true
 

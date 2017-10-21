@@ -9,10 +9,13 @@ class AutoIncrementorPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
 
+        val store = AutoIncrementStore(project)
+
         val extension = project.extensions.create(
                 "autoIncrementor",
                 AutoIncrementExtension::class.java,
-                project.container(Increment::class.java)
+                project.container(Increment::class.java),
+                store
         )
 
         project.afterEvaluate {
@@ -54,6 +57,7 @@ class AutoIncrementorPlugin : Plugin<Project> {
 
                     it.increment = increment
                     it.variant = variant
+                    it.store = store
 
                 }
 
