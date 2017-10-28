@@ -13,7 +13,7 @@ open class AutoIncrementExtension(val increments: NamedDomainObjectContainer<Inc
 
     val versionCode: Int get() = store.versionCode
 
-    var enabled = true
+    val versionName: String get() = store.versionName
 
     fun increments(action: Action<in NamedDomainObjectContainer<Increment>>) {
         action.execute(increments)

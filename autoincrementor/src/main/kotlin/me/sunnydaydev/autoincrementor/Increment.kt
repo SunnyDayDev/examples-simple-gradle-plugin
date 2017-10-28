@@ -7,32 +7,25 @@ package me.sunnydaydev.autoincrementor
 
 class Increment constructor(val name: String){
 
-    var onVariants: Array<String> = arrayOf()
+    var variants: Array<String> = arrayOf()
         private set
 
-    var onBuildTypes: Array<String> = arrayOf()
+    var versionCodeIncrement = 1
         private set
 
-    var onFlavors: Array<String> = arrayOf()
+    var versionNameIncrement = "0.0.0"
         private set
 
-    var buildIncrement = 1
-        private set
-
-    fun buildIncrement(buildIncrement: Int) {
-        this.buildIncrement = buildIncrement
+    fun versionCodeIncrement(versionCodeIncrement: Int) {
+        this.versionCodeIncrement = versionCodeIncrement
     }
 
-    fun onBuildTypes(buildTypes: Array<String>) {
-        onBuildTypes = buildTypes
+    fun versionNameIncrement(versionNameIncrement: String) {
+        this.versionNameIncrement = versionNameIncrement
     }
 
     fun onVariants(variants: Array<String>) {
-        onVariants = variants
-    }
-
-    fun onFlavors(flavors: Array<String>) {
-        onFlavors = flavors
+        this.variants = variants
     }
 
 }

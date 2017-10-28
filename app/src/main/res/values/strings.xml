@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Simple Gradle plugin</string>
+    <string name="prompt_version_name">Version name:</string>
+    <string name="prompt_version_code">Version code</string>
 </resources>

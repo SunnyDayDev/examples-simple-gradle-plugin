@@ -18,35 +18,14 @@ class AutoIncrementorPlugin : Plugin<Project> {
                 store
         )
 
-        project.afterEvaluate {
-
-            println("AutoIncrement ${ if (extension.enabled) { "enabled" } else { "disabled" } }.")
-
-            if (extension.enabled && extension.increments.isNotEmpty()) {
-
-                println("Increments:")
-
-                extension.increments.forEach {
-                    println("""
-                        - ${it.name}:
-                            Variants: ${it.onVariants.joinToString()}
-                            Build increment: ${it.buildIncrement}
-                    """.trimIndent())
-                }
-
-            }
-
-        }
-
         if (project.plugins.hasPlugin(AppPlugin::class.java)) {
 
-            val app = project.extensions.getByType(AppExtension::class.java)
+            val app = project.extensions.getByType(AppExtension::class.java) ?: return
 
             app.applicationVariants.all { variant ->
 
                 val increment = extension.increments
-                        .find { canIncrement(it, variant) }
-                        ?: return@all
+                        .find { it.variants.contains(variant.name) } ?: return@all
 
                 val task = project.tasks.create(
                         "increment${increment.name.capitalize()}On${variant.name.capitalize()}",
@@ -58,6 +37,7 @@ class AutoIncrementorPlugin : Plugin<Project> {
                     it.increment = increment
                     it.variant = variant
                     it.store = store
+                    it.appExtension = app
 
                 }
 
@@ -67,12 +47,6 @@ class AutoIncrementorPlugin : Plugin<Project> {
 
         }
 
-    }
-
-    private fun canIncrement(increment: Increment, variant: ApplicationVariant): Boolean {
-        return increment.onVariants.contains(variant.name) ||
-                increment.onBuildTypes.contains(variant.buildType.name) ||
-                increment.onFlavors.any { variant.productFlavors.map { it.name }.contains(it) }
     }
 
 }

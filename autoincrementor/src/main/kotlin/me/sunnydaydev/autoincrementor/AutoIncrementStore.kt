@@ -2,6 +2,7 @@ package me.sunnydaydev.autoincrementor
 
 import org.gradle.api.Project
 import java.io.*
+import java.nio.file.Files.exists
 import java.util.*
 
 /**
@@ -14,6 +15,13 @@ class AutoIncrementStore(private val project: Project) {
         get() = properties.versionCode ?: 1
         internal set(value) {
             properties.versionCode = value
+            commit()
+        }
+
+    var versionName: String
+        get() = properties.versionName ?: "0.0.1"
+        internal set(value) {
+            properties.versionName = value
             commit()
         }
 
@@ -38,12 +46,20 @@ class AutoIncrementStore(private val project: Project) {
         }
     }
 
-    private fun File.newWriter(): Writer {
-        return BufferedWriter(FileWriter(this))
-    }
+    //region// Extensions
 
     private var Properties.versionCode: Int?
         get() = this["VERSION_CODE"]?.toString()?.toIntOrNull()
         set(value) { this["VERSION_CODE"] = value.toString() }
+
+    private var Properties.versionName: String?
+        get() = this["VERSION_NAME"]?.toString()
+        set(value) { this["VERSION_NAME"] = value }
+
+    private fun File.newWriter(): Writer {
+        return BufferedWriter(FileWriter(this))
+    }
+
+    //endregion
 
 }
